@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{% if job %}Edit{% else %}Add{% endif %} Job Application - Resume & Job Tracker{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="card bg-white rounded-2xl shadow-soft p-8 border border-gray-100">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">
+                {% if job %}Edit{% else %}Add{% endif %} Job Application
+            </h1>
+            <p class="mt-2 text-sm text-gray-500">
+                {% if job %}Update your job application details below{% else %}Fill in the job application details below{% endif %}
+            </p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                    <input type="text" name="company" id="company" required
+                           value="{{ job.company if job else '' }}"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                           placeholder="Enter company name">
+                </div>
+
+                <div>
+                    <label for="role" class="block text-sm font-medium text-gray-700">Job Role</label>
+                    <input type="text" name="role" id="role" required
+                           value="{{ job.role if job else '' }}"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                           placeholder="Enter job role">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                    <input type="text" name="location" id="location" required
+                           value="{{ job.location if job else '' }}"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                           placeholder="Enter job location">
+                </div>
+
+                <div>
+                    <label for="application_date" class="block text-sm font-medium text-gray-700">Application Date</label>
+                    <input type="date" name="application_date" id="application_date" required
+                           value="{{ job.application_date.strftime('%Y-%m-%d') if job else '' }}"
+                           class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="status" id="status" required
+                            class="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="applied" {% if job and job.status == 'applied' %}selected{% endif %}>Applied</option>
+                        <option value="interviewing" {% if job and job.status == 'interviewing' %}selected{% endif %}>Interviewing</option>
+                        <option value="offered" {% if job and job.status == 'offered' %}selected{% endif %}>Offered</option>
+                        <option value="rejected" {% if job and job.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
+                <div class="mt-1">
+                    <textarea name="notes" id="notes" rows="4"
+                              class="block w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                              placeholder="Enter any additional notes about the application...">{{ job.notes if job else '' }}</textarea>
+                </div>
+                <p class="mt-2 text-sm text-gray-500">Add any relevant notes about the application process, interviews, or feedback.</p>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+                <a href="{{ url_for('job_list') }}"
+                   class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+                    {% if job %}Save Changes{% else %}Add Application{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 
